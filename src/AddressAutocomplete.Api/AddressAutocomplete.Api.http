@@ -1,0 +1,6 @@
+@AddressAutocomplete.Api_HostAddress = http://localhost:5177
+
+GET {{AddressAutocomplete.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
