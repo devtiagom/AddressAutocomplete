@@ -1,6 +1,6 @@
 namespace AddressAutocomplete.Application.DTOs;
 
-public sealed class AddressSuggestionDto
+public sealed class AddressSuggestionResponseDto
 {
     public string AddressLine { get; init; } = string.Empty;
 

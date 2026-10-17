@@ -4,20 +4,14 @@ using AddressAutocomplete.Application.Services;
 using AddressAutocomplete.Infrastructure.AzureMaps.Models;
 using Microsoft.Extensions.Options;
 
-namespace AddressAutocomplete.Infrastructure.AzureMaps;
+namespace AddressAutocomplete.Infrastructure.AzureMaps.Services;
 
-public sealed class AzureMapsAddressSearch : IAddressService
+public sealed class AzureMapsAddressSearchService(HttpClient httpClient, IOptions<AzureMapsOptions> options)
+    : IAddressSearchService
 {
-    private readonly HttpClient _httpClient;
-    private readonly AzureMapsOptions _options;
+    private readonly AzureMapsOptions _options = options.Value;
 
-    public AzureMapsAddressSearch(HttpClient httpClient, IOptions<AzureMapsOptions> options)
-    {
-        _httpClient = httpClient;
-        _options = options.Value;
-    }
-
-    public async Task<IReadOnlyList<AddressSuggestionDto>>
+    public async Task<IReadOnlyList<AddressSuggestionResponseDto>>
         GetSuggestionsAsync(
             string query,
             double? latitude,
@@ -56,7 +50,7 @@ public sealed class AzureMapsAddressSearch : IAddressService
             string.Join("&", parameters);
 
         var response =
-            await _httpClient.GetFromJsonAsync<AzureMapsAutocompleteResponse>(
+            await httpClient.GetFromJsonAsync<AzureMapsAutocompleteResponse>(
                 url,
                 cancellationToken);
 
@@ -68,12 +62,7 @@ public sealed class AzureMapsAddressSearch : IAddressService
             .ToList();
     }
 
-    public Task<long> CreateAsync(CreateAddressRequest request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    private static AddressSuggestionDto MapSuggestion(AzureMapsFeature feature)
+    private static AddressSuggestionResponseDto MapSuggestion(AzureMapsFeature feature)
     {
         var address = feature.Properties?.Address;
 
@@ -91,27 +80,18 @@ public sealed class AzureMapsAddressSearch : IAddressService
             latitude = coordinates[1];
         }
 
-        return new AddressSuggestionDto
+        return new AddressSuggestionResponseDto
         {
-            AddressLine =
-                address?.FormattedAddress
-                ?? address?.AddressLine
-                ?? string.Empty,
-
+            AddressLine = address?.FormattedAddress
+                          ?? address?.AddressLine
+                          ?? string.Empty,
             Street = address?.StreetName,
-
             Number = address?.StreetNumber,
-
             Neighborhood = address?.Neighborhood,
-
             Municipality = address?.Locality,
-
             State = state,
-
             PostalCode = address?.PostalCode,
-
             Latitude = latitude,
-
             Longitude = longitude
         };
     }

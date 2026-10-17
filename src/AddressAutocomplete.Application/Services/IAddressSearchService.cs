@@ -2,16 +2,12 @@ using AddressAutocomplete.Application.DTOs;
 
 namespace AddressAutocomplete.Application.Services;
 
-public interface IAddressService
+public interface IAddressSearchService
 {
-    Task<IReadOnlyList<AddressSuggestionDto>>
+    Task<IReadOnlyList<AddressSuggestionResponseDto>>
         GetSuggestionsAsync(
             string query,
             double? latitude,
             double? longitude,
             CancellationToken cancellationToken);
-
-    Task<long> CreateAsync(
-        CreateAddressRequest request,
-        CancellationToken cancellationToken);
 }

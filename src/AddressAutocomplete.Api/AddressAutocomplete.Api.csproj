@@ -15,4 +15,13 @@
     <ProjectReference Include="..\AddressAutocomplete.Infrastructure\AddressAutocomplete.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="WeatherForecast.cs" />
+  </ItemGroup>
+
 </Project>
