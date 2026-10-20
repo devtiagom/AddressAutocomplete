@@ -13,17 +13,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<AzureMapsOptions>(configuration.GetSection(AzureMapsOptions.SectionName));
-        //services.Configure<AzureMapsOptions>(options => 
-            //configuration.GetSection(AzureMapsOptions.SectionName).Bind(options));
-
-
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-
+        
+        services.Configure<AzureMapsOptions>(configuration.GetSection(AzureMapsOptions.SectionName));
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
-
         services.AddHttpClient<IAddressSearchService, AzureMapsAddressSearchService>();
-
         services.AddScoped<IAddressPersistenceService, AddressPersistenceService>();
 
         return services;
