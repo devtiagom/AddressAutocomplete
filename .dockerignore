@@ -1,0 +1,18 @@
+# Controle de versão
+.git/
+.gitignore
+
+# Arquivos gerados pelo .NET
+**/bin/
+**/obj/
+
+# Arquivos e diretórios de IDE
+.vs/
+.idea/
+
+# Segredos e configurações locais
+.env
+**/.env
+
+# Arquivos de logs
+**/*.log
