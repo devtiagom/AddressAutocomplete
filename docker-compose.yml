@@ -9,6 +9,7 @@ services:
       ASPNETCORE_HTTP_PORTS: "8080"
       ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=address_autocomplete;Username=postgres;Password=${POSTGRES_PASSWORD}"
       AzureMaps__SubscriptionKey: "${AZURE_MAPS_SUBSCRIPTION_KEY}"
+      AzureMaps__DefaultBoundingBox: "-74,-34,-34,6"
     depends_on:
       db:
         condition: service_healthy

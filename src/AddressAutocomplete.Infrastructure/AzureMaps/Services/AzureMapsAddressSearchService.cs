@@ -35,12 +35,18 @@ public sealed class AzureMapsAddressSearchService(HttpClient httpClient, IOption
             "top=5"
         };
 
+        
         if (latitude.HasValue && longitude.HasValue)
         {
             parameters.Add(
                 $"coordinates={longitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)}," +
                 $"{latitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
         }
+        else
+        {
+            parameters.Add($"bbox={Uri.EscapeDataString(_options.DefaultBoundingBox)}");
+        }
+
 
         parameters.Add(
             $"subscription-key={Uri.EscapeDataString(_options.SubscriptionKey)}");
